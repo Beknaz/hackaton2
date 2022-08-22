@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from django.urls import reverse
 from django.dispatch import receiver
-from django rest_passwordreset.signals import rest_password_token_created
+from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
