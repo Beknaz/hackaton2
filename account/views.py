@@ -117,7 +117,6 @@ class PasswordResetView(APIView):
     serializer_class = PasswordResetEmailSerializer
     def post(self, request):
         data = request.data
-        # email = request.email
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             pass

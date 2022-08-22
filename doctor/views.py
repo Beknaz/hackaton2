@@ -141,7 +141,7 @@ class EntryViewSet(ModelViewSet):
     def check_availability(self, d_data):
         arrival = datetime.strptime(d_data["arrival_datetime"], "%Y-%m-%d %H:%M:%S.%f")
         departure = datetime.strptime(d_data["departure_datetime"], "%Y-%m-%d %H:%M:%S.%f")
-        entries = Entry.objects.filter(doctor=d_data["id"])
+        entries = Entry.objects.filter(doctor=d_data["doctor"])
         if entries:
             for e in entries:
                 days1 = frozenset(range(arrival.day, departure.day + 1))
