@@ -39,15 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #libs
+    
     'rest_framework_simplejwt',
     'drf_yasg',
     'django.contrib.sites',
     'rest_framework',
-    #apps
-    'doctor',
-    'account',
-
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
