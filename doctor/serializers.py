@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 
 
-from .models import Doctor, Comment, Rating, Favorite, Booking, Chat
+from .models import Doctor, Comment, Rating, Favorite, Chat, Entry
 
 
 class DoctorSerializer(serializers.ModelSerializer):
@@ -68,15 +68,15 @@ class FavoriteSerializer(serializers.ModelSerializer):
         return rep
 
 
-class BookingSerializer(serializers.ModelSerializer):
+class EntrySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Booking
+        model = Entry
         fields = '__all__'
 
     def create(self, validated_data):
-        booking = super().create(validated_data)
-        self.status(self.context.get('request'), booking.doctor.id)
-        return booking
+        entry = super().create(validated_data)
+        self.status(self.context.get('request'), entry.doctor.id)
+        return entry
 
 
     def status(self, request, p_id):
