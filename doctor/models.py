@@ -1,4 +1,3 @@
-from unicodedata import category
 from django.db import models
 from account.models import User
 
@@ -15,7 +14,7 @@ class ServiceListing(models.Model):
 class Doctor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    Categories = models.ManyToManyField(Category, related_name='doctors')
+    categories = models.ManyToManyField(Category, related_name='doctors')
     adress = models.CharField(max_length=255)
     image = models.ImageField(upload_to='rooms', null=True, blank=True)
     description = models.TextField()

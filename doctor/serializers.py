@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 
 
-from .models import Doctor, Comment, Rating, Category, Favorite, Chat, Entry, Service_listing
+from .models import Doctor, Comment, Rating, Category, Favorite, Chat, Entry, ServiceListing
 
 
 class DoctorSerializer(serializers.ModelSerializer):
@@ -95,5 +95,5 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ServiceListingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Service_listing
+        model = ServiceListing
         fields = '__all__'
