@@ -80,9 +80,6 @@ class EntrySerializer(serializers.ModelSerializer):
         self.status(self.context.get('request'), entry.doctor.id)
         return entry
 
-
-
-
     def to_representation(self, instance):
         rep  = super().to_representation(instance)
         rep["user"] = instance.user.email
