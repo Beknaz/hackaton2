@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.urls import path
-from .views import RegisterAPIView, activate
+from .views import activate
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from . import views
