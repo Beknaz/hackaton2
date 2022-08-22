@@ -24,7 +24,12 @@ class Doctor(models.Model):
     service_listing = models.ManyToManyField(ServiceListing, related_name='doctors')
 
     def __str__(self):
+<<<<<<< HEAD
+        return f"{self.user.username} => {self.title}"
+        
+=======
         return f"{self.first_name} => {self.first_name}"
+>>>>>>> 02c7ae5213783f685182dd6ef573c40a82cfdae0
     @property
     def average_rating(self):
         ratings = [rating.value for rating in self.ratings.all()]
