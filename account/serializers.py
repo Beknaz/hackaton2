@@ -41,6 +41,12 @@ class LoginSerializer(TokenObtainPairSerializer):
     pass
 
 
+class ActivationSerializer(serializers.Serializer):
+    activation_code = serializers.CharField(required=True,
+                                            write_only=True,
+                                            max_length=255)
+
+
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
