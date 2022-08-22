@@ -50,8 +50,8 @@ INSTALLED_APPS = [
     #3rd
     "allauth.socialaccount.providers.github", # new
     #apps
-    'hotel',
-    'accounts',
+    'doctor',
+    'account',
 
     'whitenoise.runserver_nostatic',
     'corsheaders',
