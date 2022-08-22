@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'doctor',
     'account',
 
-
     'whitenoise.runserver_nostatic',
     'corsheaders',
 

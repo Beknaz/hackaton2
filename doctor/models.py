@@ -79,11 +79,3 @@ class Chat(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"Chats{self.user.username} -> {self.sms.title} [{self.created_at}]"
-
-
-
-
-
-
-
-
