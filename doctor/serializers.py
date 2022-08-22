@@ -74,15 +74,11 @@ class EntrySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        entry = super().create(validated_data)
-        self.status(self.context.get('request'), entry.doctor.id)
-        return entry
-
-
-
+        validated_data['user'] = self.context.get('request').user
+        return super().create(validated_data)
 
     def to_representation(self, instance):
-        rep  = super().to_representation(instance)
+        rep = super().to_representation(instance)
         rep["user"] = instance.user.email
         return rep
 
