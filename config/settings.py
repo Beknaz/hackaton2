@@ -49,9 +49,15 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
 
     "allauth.socialaccount.providers.github", # new
+<<<<<<< HEAD
 
     'hotel',
     'accounts',
+=======
+    #apps
+    'doctor',
+    'account',
+>>>>>>> e5e5c4d019695a84c3bd89872c1952aa5c40c714
 
     'whitenoise.runserver_nostatic',
     'corsheaders',
