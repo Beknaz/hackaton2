@@ -9,8 +9,8 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.utils import timezone
 
-from .models import Doctor
-from .serializers import DoctorSerializer
+from .models import Doctor, Category
+from .serializers import DoctorSerializer, CategorySerializer
 from permissions import IsAdminOrReadOnly, IsAuthor
 
 class DoctorViewSet(ModelViewSet):
@@ -45,5 +45,18 @@ class DoctorViewSet(ModelViewSet):
         serializer = DoctorSerializer(queryset, many=True, context={"request":request})
         return Response(serializer.data, 200)
 
+class CategoryViewSet(mixins.CreateModelMixin, 
+                    mixins.DestroyModelMixin, 
+                    mixins.ListModelMixin, 
+                    GenericViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
 
-
+class ServiceListingViewSet(mixins.CreateModelMixin, 
+                    mixins.DestroyModelMixin, 
+                    mixins.ListModelMixin, 
+                    GenericViewSet):
+    queryset = ServiceListing.objects.all()
+    serializer_class = ServiceListingSerializer
+    permission_classes = [IsAdminOrReadOnly]

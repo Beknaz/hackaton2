@@ -1,4 +1,4 @@
-ggfrom unicodedata import category
+from unicodedata import category
 from django.db import models
 from account.models import User
 
@@ -79,12 +79,3 @@ class Chat(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"Chats{self.user.username} -> {self.sms.title} [{self.created_at}]"
-
-
-
-
-
-
-
-
->>>>>>> e5e5c4d019695a84c3bd89872c1952aa5c40c714
