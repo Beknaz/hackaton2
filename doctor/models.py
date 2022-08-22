@@ -1,10 +1,13 @@
 from django.db import models
 from account.models import User
 
+
 class Category(models.Model):
     title = models.CharField(max_length=100)
+    my_doctors = models.ManyToManyField("doctor.Doctor", null=True, blank=True, related_name='categorys')
     def __str__(self):
         return f"{self.title} => {self.title}"
+
 
 class ServiceListing(models.Model):
     title = models.CharField(max_length=255)
@@ -13,12 +16,13 @@ class ServiceListing(models.Model):
     def __str__(self):
         return f"{self.title} => {self.title}"
 
+
 class Doctor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     categories = models.ManyToManyField(Category, related_name='doctors')
     adress = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='rooms', null=True, blank=True)
+    image = models.ImageField(upload_to='doctors', null=True, blank=True)
     description = models.TextField()
     number = models.CharField(max_length=13)
     service_listing = models.ManyToManyField(ServiceListing, related_name='doctors')
@@ -38,9 +42,9 @@ class Entry(models.Model):
     doctor = models.ForeignKey(Doctor, related_name='entrys', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='entrys', on_delete=models.CASCADE)
     service_listing = models.ForeignKey(ServiceListing, related_name='entrys', on_delete=models.CASCADE)
-    booking_datetime = models.DateTimeField(auto_now_add=True)
-    arrival_datetime = models.DateTimeField()
-    departure_datetime = models.DateTimeField()
+    entrys_time = models.DateTimeField(auto_now_add=True)
+    start_appointment = models.DateTimeField()
+    end_appointment = models.DateTimeField()
 
 
 class Comment(models.Model):
