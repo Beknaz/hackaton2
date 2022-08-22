@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 
 
-from .models import Doctor, Comment, Rating, Favorite, Chat, Entry
+from .models import Doctor, Comment, Rating, Category, Favorite, Chat, Entry, Service_listing
 
 
 class DoctorSerializer(serializers.ModelSerializer):
@@ -79,12 +79,21 @@ class EntrySerializer(serializers.ModelSerializer):
         return entry
 
 
-    def status(self, request, p_id):
-        user = request.user
-        doctor = get_object_or_404(Doctor, id=p_id)
-        doctor.status = 1
-        doctor.save()
 
 
     def to_representation(self, instance):
-        rep = super().to_representation(instance)
+        rep  = super().to_representation(instance)
+        rep["user"] = instance.user.email
+        return rep
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class ServiceListingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service_listing
+        fields = '__all__'
