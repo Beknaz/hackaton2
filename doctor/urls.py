@@ -13,7 +13,7 @@ router.register("chats", ChatViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('toggle_like/<int:r_id>/', toggle_like),
-    path('add_rating/<int:h_code>/', add_rating),
-    path('add_to_favorites/<int:r_id>/', add_to_favorites),
+    path('toggle_like/<int:d_id>/', toggle_like),
+    path('add_rating/<int:d_id>/', add_rating),
+    path('add_to_favorites/<int:d_id>/', add_to_favorites),
 ]

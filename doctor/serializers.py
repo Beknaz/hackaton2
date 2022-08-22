@@ -15,6 +15,8 @@ class DoctorSerializer(serializers.ModelSerializer):
         rep["comments"] = CommentSerializer(instance.comments.all(), many=True).data
         rep["likes"] = instance.likes.all().count()
         rep["rating"] = instance.average_rating
+        rep["categories"] = CategorySerializer(instance.categories.all(), many=True).data
+        rep["service_listing"] = ServiceListingSerializer(instance.service_listing.all(), many=True).data
         request = self.context.get("request")
         if request.user.is_authenticated:
             if Rating.objects.filter(user=request.user, doctor=instance).exists():
@@ -86,10 +88,10 @@ class EntrySerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id','title']
 
 
 class ServiceListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceListing
-        fields = '__all__'
+        fields = ['id', 'title']
