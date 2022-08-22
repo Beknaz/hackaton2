@@ -44,23 +44,14 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django.contrib.sites',
     'rest_framework',
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    #3rd
-    "allauth.socialaccount.providers.github", # new
     #apps
     'doctor',
     'account',
 
-    'whitenoise.runserver_nostatic',
-    'corsheaders',
 ]
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -102,14 +93,14 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-import dj_database_url
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql'
-    }
-} 
-db = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db)
+# import dj_database_url
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql'
+#     }
+# } 
+# db = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
