@@ -3,13 +3,15 @@ from account.models import User
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
-
+    def __str__(self):
+        return f"{self.title} => {self.title}"
 
 class ServiceListing(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-
+    def __str__(self):
+        return f"{self.title} => {self.title}"
 
 class Doctor(models.Model):
     first_name = models.CharField(max_length=255)
@@ -18,12 +20,11 @@ class Doctor(models.Model):
     adress = models.CharField(max_length=255)
     image = models.ImageField(upload_to='rooms', null=True, blank=True)
     description = models.TextField()
-    categories = models.ManyToManyField(Category, related_name='doctors')
     number = models.CharField(max_length=13)
     service_listing = models.ManyToManyField(ServiceListing, related_name='doctors')
 
     def __str__(self):
-        return f"{self.user.username} => {self.title}"
+        return f"{self.first_name} => {self.first_name}"
     @property
     def average_rating(self):
         ratings = [rating.value for rating in self.ratings.all()]
