@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django.contrib.sites',
     
     'rest_framework_simplejwt',
     'drf_yasg',
@@ -212,3 +213,4 @@ ACTIVATE_USERS_EMAIL = True
 EMAIL_USE_SSL = False
 SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SITE_ID=1
