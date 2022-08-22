@@ -48,16 +48,11 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
 
-    "allauth.socialaccount.providers.github", # new
-<<<<<<< HEAD
+    "allauth.socialaccount.providers.github", 
 
-    'hotel',
-    'accounts',
-=======
-    #apps
     'doctor',
     'account',
->>>>>>> e5e5c4d019695a84c3bd89872c1952aa5c40c714
+
 
     'whitenoise.runserver_nostatic',
     'corsheaders',
@@ -108,14 +103,14 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-import dj_database_url
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql'
-    }
-} 
-db = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db)
+# import dj_database_url
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql'
+#     }
+# } 
+# db = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
