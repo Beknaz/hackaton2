@@ -21,7 +21,7 @@ class Doctor(models.Model):
     description = models.TextField()
     categories = models.ManyToManyField(Category, related_name='doctors')
     number = models.CharField(max_length=13)
-    service_listing = models.ManyToManyField(ServiceListing, related_name='doctors', on_delete=models.CASCADE)
+    service_listing = models.ManyToManyField(ServiceListing, related_name='doctors')
 
     def __str__(self):
         return f"{self.user.username} => {self.title}"
