@@ -85,5 +85,5 @@ class PasswordResetEmailSerializer(serializers.Serializer):
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
     old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True,
-                                         min_length=8, write_only=True)
+    new_password = serializers.CharField(required=True, min_length=8, write_only=True)
+                                         
