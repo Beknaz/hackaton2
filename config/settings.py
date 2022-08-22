@@ -14,7 +14,7 @@ from pathlib import Path
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,24 +44,17 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django.contrib.sites',
     'rest_framework',
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
 
-    "allauth.socialaccount.providers.github", # new
-
-    #apps
     'doctor',
     'account',
 
     'whitenoise.runserver_nostatic',
     'corsheaders',
+
 ]
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
