@@ -25,6 +25,7 @@ class Doctor(models.Model):
 
     def __str__(self):
         return f"{self.first_name} => {self.first_name}"
+        
     @property
     def average_rating(self):
         ratings = [rating.value for rating in self.ratings.all()]
