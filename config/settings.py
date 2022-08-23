@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
     
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
 
     'whitenoise.runserver_nostatic',
     'corsheaders',
+    'webpush',
 
 ]
 MIDDLEWARE = [
@@ -67,11 +67,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
+import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,6 +127,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+WEBPUSH_SETTINGS = {
+   "VAPID_PUBLIC_KEY": "BLG-L4lXyvo3hoZzXEvBV2xwhakq9nIjoFCIGcI8aZwdHlwcSUMDcdO2EYyPr5roNC8tVNrEJFKGzygZ2iotTlU",
+   "VAPID_PRIVATE_KEY": "TNc9-3CEm5MUg3Mkbh9qJVt56VJW1DB1U_fciScxv3w",
+   "VAPID_ADMIN_EMAIL": "choybekov.beknaz@gmail.com"
+}
+
 AUTH_USER_MODEL = 'account.User'
 
 # Internationalization
@@ -147,6 +153,8 @@ USE_TZ = True
 import os
 
 STATIC_URL = '/static/'
+
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = (
