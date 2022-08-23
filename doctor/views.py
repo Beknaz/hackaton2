@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import mixins, filters
@@ -7,10 +6,9 @@ from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from django.utils import timezone
 
 from .models import Doctor, Category, ServiceListing, Comment, Like, Favorite, Rating, Chat, Entry
-from .serializers import DoctorSerializer, CategorySerializer, ServiceListingSerializer, CommentSerializer, ChatSerializer, EntrySerializer
+from .serializers import DoctorSerializer, CategorySerializer, ServiceListingSerializer, CommentSerializer, ChatSerializer, EntrySerializer, FavoriteSerializer
 from permissions import IsAdminOrReadOnly, IsAuthor
 
 class DoctorViewSet(ModelViewSet):
@@ -122,6 +120,14 @@ def add_to_favorites(request, d_id):
     return Response("Added to favorites", 200)
 
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def my_favorites(request):
+    queryset = Favorite.objects.filter(user=request.user)
+    serializer = FavoriteSerializer(queryset, many=True)
+    return Response(serializer.data)
+
+
 class ChatViewSet(ModelViewSet):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
@@ -138,20 +144,16 @@ class EntryViewSet(ModelViewSet):
     serializer_class = EntrySerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthor]
 
-    def check_availability(self, d_data):
-        arrival = datetime.strptime(d_data["arrival_datetime"], "%Y-%m-%d %H:%M:%S.%f")
-        departure = datetime.strptime(d_data["departure_datetime"], "%Y-%m-%d %H:%M:%S.%f")
-        entries = Entry.objects.filter(doctor=d_data["doctor"])
+    def check_availability(self, r_data):
+        date = r_data["date"]
+        time_slot = r_data["time_slot"]
+        entries = Entry.objects.filter(doctor=r_data["doctor"])
         if entries:
             for e in entries:
-                days1 = frozenset(range(arrival.day, departure.day + 1))
-                days2 = frozenset(range(e.arrival_datetime.day, e.departure_datetime.day + 1))
-                if days1.intersection(days2) and arrival.month == e.arrival_datetime.month and departure.month == e.departure_datetime.month:
-                    return Response(f"This doctor is not available for days {tuple(days1.intersection(days2))} of month\
-                        {arrival.month if arrival.month == departure.month else (arrival.month, departure.month)}. Please check another dates")
-        return Response("Doctor is available for this time")
-        
-
+                if str(e.date) == str(date) and str(e.time_slot) == str(time_slot):
+                    raise Exception("This time slot is already booked for this doctor. Please choose another time or day")
+        return Response("Appointment is successfully created")
+    
     def create(self, request, *args, **kwargs):
         self.check_availability(request.data)
         return super().create(request, *args, **kwargs)
