@@ -41,11 +41,6 @@ class LoginSerializer(TokenObtainPairSerializer):
     pass
 
 
-class ActivationSerializer(serializers.Serializer):
-    activation_code = serializers.CharField(required=True,
-                                            write_only=True,
-                                            max_length=255)
-
 
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
@@ -84,10 +79,6 @@ class PasswordResetEmailSerializer(serializers.Serializer):
 
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
-
-    """
-    Serializer for password change endpoint.
-    """
     old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True,
-                                         min_length=8, write_only=True)
+    new_password = serializers.CharField(required=True, min_length=8, write_only=True)
+                                         
