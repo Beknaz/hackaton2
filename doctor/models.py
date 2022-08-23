@@ -39,12 +39,28 @@ class Doctor(models.Model):
 
 
 class Entry(models.Model):
+
+    TIMESLOT_LIST = (
+        (0, '09:00 - 10:00'),
+        (1, '10:00 - 11:00'),
+        (2, '11:00 - 12:00'),
+        (3, '12:00 - 13:00'),
+        (4, '14:00 - 15:00'),
+        (5, '15:00 - 16:00'),
+        (6, '16:00 - 17:00'),
+        (7, '17:00 - 18:00'),
+    )
+
     doctor = models.ForeignKey(Doctor, related_name='entrys', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='entrys', on_delete=models.CASCADE)
     service_listing = models.ForeignKey(ServiceListing, related_name='entrys', on_delete=models.CASCADE)
     entrys_time = models.DateTimeField(auto_now_add=True)
-    start_appointment = models.DateTimeField()
-    end_appointment = models.DateTimeField()
+    time_slot = models.IntegerField(choices=TIMESLOT_LIST)
+    date = models.DateField(help_text="YYYY-MM-DD")
+
+    @property
+    def time(self):
+        return self.TIMESLOT_LIST[self.time_slot][1]
 
 
 class Comment(models.Model):

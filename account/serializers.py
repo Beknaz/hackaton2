@@ -4,7 +4,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-from .tasks import send_conf_emails
 
 
 User = get_user_model()
@@ -40,6 +39,11 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSerializer(TokenObtainPairSerializer):
     pass
 
+
+class ActivationSerializer(serializers.Serializer):
+    activation_code = serializers.CharField(required=True,
+                                            write_only=True,
+                                            max_length=255)
 
 
 class LogoutSerializer(serializers.Serializer):
