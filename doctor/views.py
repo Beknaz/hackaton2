@@ -144,18 +144,16 @@ class EntryViewSet(ModelViewSet):
     serializer_class = EntrySerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthor]
 
-    def check_availability(self, r_data):
+    
+    def create(self, request, *args, **kwargs):
+        r_data = request.data
         date = r_data["date"]
         time_slot = r_data["time_slot"]
         entries = Entry.objects.filter(doctor=r_data["doctor"])
         if entries:
             for e in entries:
                 if str(e.date) == str(date) and str(e.time_slot) == str(time_slot):
-                    raise Exception("This time slot is already booked for this doctor. Please choose another time or day")
-        return Response("Appointment is successfully created")
-    
-    def create(self, request, *args, **kwargs):
-        self.check_availability(request.data)
+                    return Response("This time slot is already booked for this doctor. Please choose another time or day")
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
