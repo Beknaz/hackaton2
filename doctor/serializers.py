@@ -75,8 +75,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
 class EntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Entry
-        fields = '__all__'
-
+        exclude = ['user']
 
     def create(self, validated_data):
         validated_data['user'] = self.context.get('request').user
