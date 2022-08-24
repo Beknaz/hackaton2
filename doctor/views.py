@@ -157,7 +157,14 @@ class EntryViewSet(ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        self.check_availability(request.data)
+        r_data = request.data
+        date = r_data["date"]
+        time_slot = r_data["time_slot"]
+        entries = Entry.objects.filter(doctor=r_data["doctor"])
+        if entries:
+            for e in entries:
+                if str(e.date) == str(date) and str(e.time_slot) == str(time_slot):
+                    return Response("This time slot is already booked for this doctor. Please choose another time or day")
         return super().update(request, *args, **kwargs)
 
     def get_serializer_context(self):
