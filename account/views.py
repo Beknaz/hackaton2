@@ -1,19 +1,16 @@
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
-from django.urls import reverse
-from django.dispatch import receiver
 from django_rest_passwordreset.signals import reset_password_token_created
-from django.core.mail import send_mail
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
-from .serializers import RegisterSerializer,  UserSerializer, LoginSerializer, LogoutSerializer, ChangePasswordSerializer, PasswordResetEmailSerializer, ActivationSerializer
+from .serializers import RegisterSerializer,  UserSerializer, LoginSerializer, LogoutSerializer, ChangePasswordSerializer, ActivationSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import ListAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, permissions
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import api_view
 
 User = get_user_model()
 class RegisterAPIView(APIView):
@@ -65,22 +62,6 @@ class UserListAPIView(ListAPIView):
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAdminUser, )
 
-@receiver(reset_password_token_created)
-def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
-
-    email_plaintext_message = "{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
-
-    send_mail(
-        # title:
-        "Password Reset for {title}".format(title="Some website title"),
-        # message:
-        email_plaintext_message,
-        # from:
-        "noreply@somehost.local",
-        # to:
-        [reset_password_token.user.email]
-    )
-
 
 class ChangePasswordView(UpdateAPIView):
     """
@@ -111,17 +92,3 @@ class ChangePasswordView(UpdateAPIView):
             return Response(response)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class PasswordResetView(APIView):
-    serializer_class = PasswordResetEmailSerializer
-    def post(self, request):
-        data = request.data
-        serializer = self.serializer_class(data=data)
-        if serializer.is_valid():
-            pass
-        return Response('OK', 200)
-
-    @action(['GET'],detail='fe')
-    def hello(self):
-        return Response("World")
