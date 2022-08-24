@@ -151,8 +151,9 @@ class EntryViewSet(ModelViewSet):
         if entries:
             for e in entries:
                 if str(e.date) == str(date) and str(e.time_slot) == str(time_slot):
-                    raise Exception("This time slot is already booked for this doctor. Please choose another time or day")
-        return Response("Appointment is successfully created")
+                    return Response("This time slot is already booked for this doctor. Please choose another time or day")
+
+            return Response("Appointment is successfully created")
     
     def create(self, request, *args, **kwargs):
         self.check_availability(request.data)
