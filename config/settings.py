@@ -45,13 +45,14 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django.contrib.sites',
     'rest_framework',
+    'django_rest_passwordreset',
 
     'doctor',
     'account',
 
     'whitenoise.runserver_nostatic',
     'corsheaders',
-    'webpush',
+
 
 ]
 MIDDLEWARE = [

@@ -1,10 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-
 
 User = get_user_model()
 
@@ -63,23 +60,6 @@ class LogoutSerializer(serializers.Serializer):
         except TokenError as exc:
             self.fail('bad_token')
             
-
-class PasswordResetEmailSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-
-    def validate(self, attrs):
-        print(attrs)
-        try:
-            email = attrs.get('email')
-            if User.objects.filter(email=email).exists():
-                user = User.objects.get(email=email)
-                token = PasswordResetTokenGenerator().make_token(user)
-                send_conf_emails.delay(user.email, user.activation_code)
-            return attrs
-        except Exception as e:
-            raise ValidationError()
-            pass
-
 
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
