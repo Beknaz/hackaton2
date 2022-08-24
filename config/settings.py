@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'corsheaders',
 
+    'social_django',
+
 
 ]
 MIDDLEWARE = [
@@ -72,7 +74,7 @@ import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,6 +82,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends', # add this
+                'social_django.context_processors.login_redirect', # add this
             ],
         },
     },
@@ -226,3 +230,25 @@ EMAIL_USE_SSL = False
 SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SITE_ID=1
+
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+AUTHENTICATION_BACKENDS = [
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.contrib.vk.VKOAuth2Backend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+# Настройки для Facebook
+FACEBOOK_APP_ID = 'app_id'
+FACEBOOK_API_SECRET = 'secret_token'
+ 
+# Настройки для Вконтакте
+VK_APP_ID = 'app_id'
+VKONTAKTE_APP_ID = VK_APP_ID
+VK_API_SECRET = 'key_api_secret'
+VKONTAKTE_APP_SECRET = VK_API_SECRET
+ 
+# Настройки для Google
+GOOGLE_OAUTH2_CLIENT_ID = '123456789.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = 'key_secert'
