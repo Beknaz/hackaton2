@@ -61,7 +61,7 @@ class User(AbstractUser):
     def send_activation_code(self):
         self.generate_activation_code()
         self.set_activation_code()
-        activation_url = f'https://makers-clinic.herokuapp.com//account/activate/{self.activation_code}'
+        activation_url = f'https://makers-clinic.herokuapp.com/account/activate/{self.activation_code}'
         message = f'Activate your account, following this link {activation_url}'
         send_mail("Activate account", message, "klinika@gmail.com", [self.email, ])
 
