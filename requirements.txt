@@ -17,5 +17,8 @@ django-webpush==0.2.5
 =======
 redis==4.3.4
 aiogram
+<<<<<<< HEAD
+=======
 
 >>>>>>> e6e1bf7c346f604529c8d23e6d58be5d06a5e82f
+>>>>>>> 363e0579cf0013127b184fcd56ea903968e88ba7
