@@ -37,9 +37,6 @@ class UserListAPIView(ListAPIView):
 
 
 class ChangePasswordView(UpdateAPIView):
-    """
-    An endpoint for changing password.
-    """
     serializer_class = ChangePasswordSerializer
     model = User
     permission_classes = (IsAuthenticated,)
@@ -78,7 +75,7 @@ def activate(request, activation_code):
     user.is_active = True
     user.activation_code = ''
     user.save()
-    return redirect("http://127.0.0.1:8000/")
+    return redirect("https://makers-clinic.herokuapp.com/")
 
 class ForgotPasswordView(APIView):
     @swagger_auto_schema(request_body=ForgotSerializer)
