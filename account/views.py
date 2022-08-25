@@ -1,33 +1,18 @@
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
-from django_rest_passwordreset.signals import reset_password_token_created
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
-from .serializers import RegisterSerializer,  UserSerializer, LoginSerializer, LogoutSerializer, ChangePasswordSerializer, ActivationSerializer
+from .serializers import RegisterSerializer,  UserSerializer, LoginSerializer, LogoutSerializer, ChangePasswordSerializer, ForgotSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import ListAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, permissions
 from rest_framework.decorators import api_view
+from drf_yasg.utils import swagger_auto_schema
 
 User = get_user_model()
-class RegisterAPIView(APIView):
-    def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response('Account created')
-
-
-@api_view(["GET"])
-def activate(request, activation_code):
-    user = get_object_or_404(User, activation_code=activation_code)
-    user.is_active = True
-    user.activation_code = ''
-    user.save()
-    return redirect("https://makers-clinic.herokuapp.com/")
 
 
 class LoginView(TokenObtainPairView):
@@ -43,18 +28,6 @@ class LogoutAPIView(GenericAPIView):
         serializers.is_valid(raise_exception=True)
         serializers.save()
         return Response({"msg":"You successfully logged out"}, status=status.HTTP_204_NO_CONTENT)
-
-
-class ActivationView(APIView):
-    def post(self, request):
-        serializer = ActivationSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            code = serializer.validated_data['activation_code']
-            user = get_object_or_404(User, activation_code=code)
-            user.is_active = True
-            user.activation_code = ''
-            user.save()
-            return Response({'msg':'User successfully activated'})
 
 
 class UserListAPIView(ListAPIView):
@@ -90,5 +63,37 @@ class ChangePasswordView(UpdateAPIView):
             }
 
             return Response(response)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RegisterAPIView(APIView):
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response('Account created')
+
+@api_view(["GET"])
+def activate(request, activation_code):
+    user = get_object_or_404(User, activation_code=activation_code)
+    user.is_active = True
+    user.activation_code = ''
+    user.save()
+    return redirect("http://127.0.0.1:8000/")
+
+class ForgotPasswordView(APIView):
+    @swagger_auto_schema(request_body=ForgotSerializer)
+    def post(self, request):
+        data = request.POST
+        serializer = ForgotSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            message = "Please, confirm your email"
+            return Response(message)
+
+class NewPasswordView(APIView):
+    def get(self, request, activation_code):
+        user = get_object_or_404(User, activation_code=activation_code)
+        new_password = user.generate_activation_code()
+        user.set_password(new_password)
+        user.save()
+        return Response(f"Your new password is {new_password}")

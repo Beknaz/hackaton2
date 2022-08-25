@@ -22,11 +22,8 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('doctor/', include('doctor.urls')),
     path('docs/', schema_view.with_ui("swagger")),
-    # path('', home),
 ]
-    # path('send_push', send_push),
-    # path('sw.js', TemplateView.as_view(template_name='sw.js', content_type='application/x-javascript'))
-    #           ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
