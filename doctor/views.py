@@ -10,6 +10,7 @@ from drf_yasg import openapi
 from .models import Doctor, Category, ServiceListing, Comment, Like, Favorite, Rating, Chat, Entry
 from .serializers import DoctorSerializer, CategorySerializer, ServiceListingSerializer, CommentSerializer, ChatSerializer, EntrySerializer, FavoriteSerializer
 from permissions import IsAdminOrReadOnly, IsAuthor
+from .tasks import entry_created
 
 class DoctorViewSet(ModelViewSet):
     queryset = Doctor.objects.all()
@@ -23,8 +24,24 @@ class DoctorViewSet(ModelViewSet):
         context["request"] = self.request
         return context
 
-    @swagger_auto_schema(manual_parameters=[openapi.Parameter('first_name', openapi.IN_QUERY, 'search doctors by name', type=openapi.TYPE_STRING)])
 
+    @swagger_auto_schema(manual_parameters=[openapi.Parameter('categories', openapi.IN_QUERY, 'recomendations by categories', type=openapi.TYPE_STRING)])
+    @action(methods=['GET'], detail=False)
+    def recomendations(self, request):
+        categories_title = request.query_params.get('categories')
+        categories = Category.objects.get(title__icontains=categories_title)
+
+        queryset = self.get_queryset()
+        queryset = queryset.filter(categories=categories)
+        
+        queryset = sorted(queryset, key=lambda doctor: doctor.average_rating, reverse=True)
+        serializer = DoctorSerializer(queryset, many=True, context={'request':request})
+        return Response(serializer.data, 200)
+
+
+
+
+    @swagger_auto_schema(manual_parameters=[openapi.Parameter('first_name', openapi.IN_QUERY, 'search doctors by name', type=openapi.TYPE_STRING)])
     @action(methods=['GET'], detail=False)
     def search(self, request):
         first_name = request.query_params.get('first_name')
@@ -42,6 +59,7 @@ class DoctorViewSet(ModelViewSet):
         queryset = sorted(queryset, key=lambda doctor: doctor.average_rating, reverse=True)
         serializer = DoctorSerializer(queryset, many=True, context={"request":request})
         return Response(serializer.data, 200)
+
 
 class CategoryViewSet(mixins.CreateModelMixin, 
                     mixins.DestroyModelMixin, 
@@ -149,12 +167,17 @@ class EntryViewSet(ModelViewSet):
         r_data = request.data
         date = r_data["date"]
         time_slot = r_data["time_slot"]
-        entries = Entry.objects.filter(doctor=r_data["doctor"])
+        doctor = r_data["doctor"]
+        entries = Entry.objects.filter(doctor=doctor)
         if entries:
             for e in entries:
                 if str(e.date) == str(date) and str(e.time_slot) == str(time_slot):
                     return Response("This time slot is already booked for this doctor. Please choose another time or day")
-        return super().create(request, *args, **kwargs)
+        super().create(request, *args, **kwargs)
+        entry = Entry.objects.get(date=date, time_slot=time_slot, doctor=doctor)
+        entry_created.delay(entry.id)
+        return Response("Appointment created")
+
 
     def update(self, request, *args, **kwargs):
         r_data = request.data

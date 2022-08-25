@@ -25,7 +25,7 @@ class Doctor(models.Model):
     image = models.ImageField(upload_to='doctors', null=True, blank=True)
     description = models.TextField()
     number = models.CharField(max_length=13)
-    service_listing = models.ManyToManyField(ServiceListing, related_name='doctors')
+    service_listing = models.ManyToManyField(ServiceListing, related_name='doctors', null=True, blank=True)
 
     def __str__(self):
         return f"{self.first_name} => {self.first_name}"

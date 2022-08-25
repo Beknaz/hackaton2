@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
 
+
 ]
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -72,7 +73,7 @@ import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -226,3 +227,5 @@ EMAIL_USE_SSL = False
 SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SITE_ID=1
+
+

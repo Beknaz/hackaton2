@@ -37,12 +37,6 @@ class LoginSerializer(TokenObtainPairSerializer):
     pass
 
 
-class ActivationSerializer(serializers.Serializer):
-    activation_code = serializers.CharField(required=True,
-                                            write_only=True,
-                                            max_length=255)
-
-
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
@@ -64,5 +58,22 @@ class LogoutSerializer(serializers.Serializer):
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
     old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True, min_length=8, write_only=True)
+    new_password = serializers.CharField(required=True, min_length=1, write_only=True)
                                          
+
+class ForgotSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        try:
+            User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError('Such email does not found')
+        return attrs
+    
+    def save(self):
+        data = self.validated_data
+        user = User.objects.get(**data)
+        user.set_activation_code()
+        user.password_confirm()
