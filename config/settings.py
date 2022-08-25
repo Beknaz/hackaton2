@@ -224,13 +224,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS   = True
 ACTIVATE_USERS_EMAIL = True
 EMAIL_USE_SSL = False
-<<<<<<< HEAD
+
 SITE_ID=1
 
-
-=======
-SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
-SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SITE_ID=1
 
 
@@ -240,4 +236,4 @@ SITE_ID=1
 # CELERY_TASK_SERIALIZER = 'json'
 # CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_TIMEZONE = TIME_ZONE
->>>>>>> e6e1bf7c346f604529c8d23e6d58be5d06a5e82f
+
