@@ -61,12 +61,12 @@ class User(AbstractUser):
     def send_activation_code(self):
         self.generate_activation_code()
         self.set_activation_code()
-        activation_url = f'http://127.0.0.1:8000/account/activate/{self.activation_code}'
+        activation_url = f'https://makers-clinic.herokuapp.com/account/activate/{self.activation_code}'
         message = f'Activate your account, following this link {activation_url}'
         send_mail("Activate account", message, "klinika@gmail.com", [self.email, ])
 
     def password_confirm(self):
-        activation_url = f'http://127.0.0.1:8000/account/password_confirm/{self.activation_code}'
+        activation_url = f'https://makers-clinic.herokuapp.com/account/password_confirm/{self.activation_code}'
         message = f"""
         Do you want to change password?
         Confirm password changes: {activation_url}
