@@ -227,3 +227,5 @@ EMAIL_USE_SSL = False
 SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SITE_ID=1
+
+
