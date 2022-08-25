@@ -15,4 +15,3 @@ pywebpush==1.6.0
 django-webpush==0.2.5
 redis==4.3.4
 aiogram
-
