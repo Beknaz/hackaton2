@@ -64,9 +64,6 @@ class ChangePasswordView(UpdateAPIView):
 
             return Response(response)
 
-<<<<<<< HEAD
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -100,6 +97,3 @@ class NewPasswordView(APIView):
         user.set_password(new_password)
         user.save()
         return Response(f"Your new password is {new_password}")
-=======
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
->>>>>>> e6e1bf7c346f604529c8d23e6d58be5d06a5e82f
