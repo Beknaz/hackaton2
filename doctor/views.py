@@ -24,8 +24,23 @@ class DoctorViewSet(ModelViewSet):
         context["request"] = self.request
         return context
 
-    @swagger_auto_schema(manual_parameters=[openapi.Parameter('first_name', openapi.IN_QUERY, 'search doctors by name', type=openapi.TYPE_STRING)])
 
+    @swagger_auto_schema(manual_parameters=[openapi.Parameter('categories', openapi.IN_QUERY, 'recomendations by categories', type=openapi.TYPE_STRING)])
+    @action(methods=['GET'], detail=False)
+    def recomendations(self, request):
+        categories_title = request.query_params.get('categories')
+        categories = Category.objects.get(title__icontains=categories_title)
+
+        queryset = self.get_queryset()
+        queryset = queryset.filter(categories=categories)
+        
+        serializer = DoctorSerializer(queryset, many=True, context={'request':request})
+        return Response(serializer.data, 200)
+
+
+
+
+    @swagger_auto_schema(manual_parameters=[openapi.Parameter('first_name', openapi.IN_QUERY, 'search doctors by name', type=openapi.TYPE_STRING)])
     @action(methods=['GET'], detail=False)
     def search(self, request):
         first_name = request.query_params.get('first_name')
@@ -43,6 +58,7 @@ class DoctorViewSet(ModelViewSet):
         queryset = sorted(queryset, key=lambda doctor: doctor.average_rating, reverse=True)
         serializer = DoctorSerializer(queryset, many=True, context={"request":request})
         return Response(serializer.data, 200)
+
 
 class CategoryViewSet(mixins.CreateModelMixin, 
                     mixins.DestroyModelMixin, 
