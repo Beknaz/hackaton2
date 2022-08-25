@@ -224,22 +224,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS   = True
 ACTIVATE_USERS_EMAIL = True
 EMAIL_USE_SSL = False
-
-
-SITE_ID=1
-
-SITE_ID=1
-
-
-# CELERY_BROKER_URL = 'redis://localhost:6379'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TIMEZONE = TIME_ZONE
-
-
 SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SITE_ID=1
+
 

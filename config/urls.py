@@ -22,7 +22,6 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('doctor/', include('doctor.urls')),
     path('docs/', schema_view.with_ui("swagger")),
-    path('social-auth/', include('social_django.urls', namespace="social")),
 ]
 
 
