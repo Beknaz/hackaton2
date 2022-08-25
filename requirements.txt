@@ -13,3 +13,9 @@ django-rest-passwordreset==1.2.1
 celery==5.2.7
 pywebpush==1.6.0
 django-webpush==0.2.5
+<<<<<<< HEAD
+=======
+redis==4.3.4
+aiogram
+
+>>>>>>> e6e1bf7c346f604529c8d23e6d58be5d06a5e82f

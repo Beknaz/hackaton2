@@ -10,6 +10,7 @@ from drf_yasg import openapi
 from .models import Doctor, Category, ServiceListing, Comment, Like, Favorite, Rating, Chat, Entry
 from .serializers import DoctorSerializer, CategorySerializer, ServiceListingSerializer, CommentSerializer, ChatSerializer, EntrySerializer, FavoriteSerializer
 from permissions import IsAdminOrReadOnly, IsAuthor
+from .tasks import entry_created
 
 class DoctorViewSet(ModelViewSet):
     queryset = Doctor.objects.all()
@@ -165,12 +166,17 @@ class EntryViewSet(ModelViewSet):
         r_data = request.data
         date = r_data["date"]
         time_slot = r_data["time_slot"]
-        entries = Entry.objects.filter(doctor=r_data["doctor"])
+        doctor = r_data["doctor"]
+        entries = Entry.objects.filter(doctor=doctor)
         if entries:
             for e in entries:
                 if str(e.date) == str(date) and str(e.time_slot) == str(time_slot):
                     return Response("This time slot is already booked for this doctor. Please choose another time or day")
-        return super().create(request, *args, **kwargs)
+        super().create(request, *args, **kwargs)
+        entry = Entry.objects.get(date=date, time_slot=time_slot, doctor=doctor)
+        entry_created.delay(entry.id)
+        return Response("Appointment created")
+
 
     def update(self, request, *args, **kwargs):
         r_data = request.data
