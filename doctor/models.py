@@ -20,6 +20,7 @@ class ServiceListing(models.Model):
 class Doctor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    experience = models.CharField(max_length=50)
     categories = models.ManyToManyField(Category, related_name='doctors')
     adress = models.CharField(max_length=255)
     image = models.ImageField(upload_to='doctors', null=True, blank=True)
