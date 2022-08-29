@@ -72,7 +72,6 @@ class FavoriteSerializer(serializers.ModelSerializer):
         return rep
 
 
-
 class EntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Entry

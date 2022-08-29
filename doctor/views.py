@@ -34,8 +34,8 @@ class DoctorViewSet(ModelViewSet):
         queryset = self.get_queryset()
         queryset = queryset.filter(categories=categories)
         
-        queryset = sorted(queryset, key=lambda doctor: doctor.average_rating, reverse=True)
-        serializer = DoctorSerializer(queryset, many=True, context={'request':request})
+        queryset = max(queryset, key=lambda doctor: doctor.average_rating)
+        serializer = DoctorSerializer(queryset, context={'request':request})
         return Response(serializer.data, 200)
 
 
@@ -194,4 +194,3 @@ class EntryViewSet(ModelViewSet):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
-        

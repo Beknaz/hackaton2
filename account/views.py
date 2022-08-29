@@ -63,11 +63,12 @@ class ChangePasswordView(UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RegisterAPIView(APIView):
+    @swagger_auto_schema(request_body=RegisterSerializer())
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response('Account created')
+            return Response('Вы были успешно зарегистрированы!')
 
 @api_view(["GET"])
 def activate(request, activation_code):
