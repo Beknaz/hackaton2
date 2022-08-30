@@ -93,11 +93,3 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f"{self.user.username} -> {self.doctor.first_name}"
-
-
-class Chat(models.Model):
-    user = models.ForeignKey(User, related_name='chats', on_delete=models.CASCADE)
-    sms = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        return f"Chats{self.user.username} -> {self.sms.title} [{self.created_at}]"
