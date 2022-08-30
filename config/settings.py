@@ -233,7 +233,6 @@ SITE_ID=1
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
-
 CACHES = {
     'default': {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
@@ -248,3 +247,4 @@ CACHES = {
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
 CACHE_MIDDLEWARE_SECONDS = 600
+
