@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
 ]
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -68,7 +69,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+
 
 ROOT_URLCONF = 'config.urls'
 import os
@@ -94,24 +97,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD'),
-#         'HOST': 'localhost',
-#         'PORT': 5432,
-#     }
-# }
-import dj_database_url
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql'
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
-} 
-db = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db)
+}
+# import dj_database_url
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql'
+#     }
+# } 
+# db = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -230,10 +233,21 @@ SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SITE_ID=1
 
-
-
-
-
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
+
+CACHES = {
+    'default': {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "my_cache_table",
+        'TIMEOUT': 60,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_KEY_PREFIX = ''
+CACHE_MIDDLEWARE_SECONDS = 600
