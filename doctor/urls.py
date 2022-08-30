@@ -18,3 +18,5 @@ urlpatterns = [
     path('add_to_favorites/<int:d_id>/', add_to_favorites),
     path('my_favorites/', my_favorites),
 ]
+
+
