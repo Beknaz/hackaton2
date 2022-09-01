@@ -69,6 +69,11 @@ class CategoryViewSet(mixins.CreateModelMixin,
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class ServiceListingViewSet(mixins.CreateModelMixin, 
                     mixins.DestroyModelMixin, 
@@ -91,6 +96,7 @@ class CommentViewSet(mixins.CreateModelMixin,
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
+
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
